@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import GLOBE from "vanta/dist/vanta.globe.min";
 import * as THREE from "three";
+import { Link } from "react-router-dom";
 
 const MainCover: React.FC = () => {
   const vantaRef = useRef<HTMLDivElement | null>(null);
@@ -48,9 +49,9 @@ const MainCover: React.FC = () => {
           Real-time monitoring and tracking with ESP32, ensuring precise speed
           detection.
         </p>
-        <button className="mt-8 bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 ease-in-out text-black font-semibold px-8 py-4 rounded-xl shadow-2xl transform hover:scale-105 animate-fadeIn delay-700">
+        <Link to='/login' className="inline-block mt-8 bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 ease-in-out text-black font-semibold px-8 py-4 rounded-xl shadow-2xl transform hover:scale-105 animate-fadeIn delay-700">
           Get Started
-        </button>
+        </Link>
       </div>
 
       {/* Tailwind custom animations */}
