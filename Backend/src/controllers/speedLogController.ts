@@ -8,6 +8,10 @@ interface logRequestBody {
   fineAmount: number;
 }
 
+interface getLogRequestBody {
+  userId: string;
+}
+
 export const createLog = async (
   req: Request<{}, {}, logRequestBody>,
   res: Response
@@ -34,7 +38,7 @@ export const createLog = async (
     await SpeedLog.create({
       userId,
       speed,
-      fineAmount
+      fineAmount,
     });
 
     return res.status(201).json({
@@ -50,4 +54,40 @@ export const createLog = async (
   }
 };
 
+export const getAllLogs = async (
+  req: Request<getLogRequestBody, {}, {}>,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { userId } = req.params;
 
+    if (!userId) {
+      return res.status(400).json({
+        message: "UserID cannot be left empty",
+        success: false,
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid UserID!!",
+        success: false,
+      });
+    }
+
+    const tickets = await SpeedLog.find({ userId });
+
+    return res.status(200).json({
+      tickets,
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
