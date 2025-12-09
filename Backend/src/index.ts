@@ -4,6 +4,7 @@ import connectDB from "./config/database";
 import cors from "cors";
 import { CorsOptions } from "cors";
 import userRoute from "./routes/userRoutes";
+import ticketRoute from "./routes/speedLogRoutes";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors(corsOption));
 
 // Routes
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/ticket", ticketRoute);
 
 // Start server
 const PORT = process.env.PORT || 5000;
