@@ -11,18 +11,16 @@ export default function Login() {
         <form className="space-y-6">
           <div>
             <label
-              htmlFor="email"
               className="block text-sm font-medium text-gray-200"
             >
-              Email address
+              Username
             </label>
             <div className="mt-2">
               <input
-                id="email"
-                name="email"
-                type="email"
+                id="username"
+                name="username"
+                type="text"
                 required
-                autoComplete="email"
                 className="block w-full rounded-xl bg-gray-700 border border-gray-600 px-3 py-2 text-white placeholder-gray-400 focus:outline-2 focus:outline-cyan-500 sm:text-sm"
               />
             </div>
