@@ -5,7 +5,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed w-full z-20 top-0 left-0 bg-transparent">
-      <div className="max-w-7xl mx-auto px-6 md:px-20 flex items-center justify-between h-20">
+      <div className="px-6 md:px-20 flex items-center justify-between h-20">
         <div className="text-white text-2xl font-extrabold">SpeedDetect</div>
 
         {/* Desktop */}
