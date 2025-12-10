@@ -1,4 +1,38 @@
+import axios from "axios";
+import { USER_API_ENDPOINT } from "../../utils/constants";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../redux/hooks";
+import { setLoggedInUser } from "../../redux/user";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/login`,
+        { username, password },
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        console.log(res.data);
+        dispatch(setLoggedInUser(res.data.loggedInUser));
+        toast.success(res.data.message);
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-linear-to-b from-gray-900 via-gray-800 to-gray-900">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm text-center">
@@ -8,11 +42,9 @@ export default function Login() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label
-              className="block text-sm font-medium text-gray-200"
-            >
+            <label className="block text-sm font-medium text-gray-200">
               Username
             </label>
             <div className="mt-2">
@@ -21,6 +53,8 @@ export default function Login() {
                 name="username"
                 type="text"
                 required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="block w-full rounded-xl bg-gray-700 border border-gray-600 px-3 py-2 text-white placeholder-gray-400 focus:outline-2 focus:outline-cyan-500 sm:text-sm"
               />
             </div>
@@ -47,6 +81,8 @@ export default function Login() {
                 type="password"
                 required
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full rounded-xl bg-gray-700 border border-gray-600 px-3 py-2 text-white placeholder-gray-400 focus:outline-2 focus:outline-cyan-500 sm:text-sm"
               />
             </div>

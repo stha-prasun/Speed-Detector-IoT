@@ -113,6 +113,7 @@ export const login = async (
     const loggedInUser = {
       _id: user._id,
       username: user.username,
+      totalFine: user.totalFine
     };
 
     return res
