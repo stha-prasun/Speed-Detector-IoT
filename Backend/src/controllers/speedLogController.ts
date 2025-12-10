@@ -4,11 +4,11 @@ import SpeedLog from "../models/speedLogSchema";
 
 interface logRequestBody {
   userId: string;
-  speed: number;
-  fineAmount: number;
+  speed: Number;
+  fineAmount: Number;
 }
 
-interface getLogRequestBody {
+interface getLogRequestParams {
   userId: string;
 }
 
@@ -35,6 +35,12 @@ export const createLog = async (
       });
     }
 
+    await User.findByIdAndUpdate(userId, {
+      $inc: { totalFine: fineAmount },
+    });
+
+    await user.save();
+
     await SpeedLog.create({
       userId,
       speed,
@@ -55,7 +61,7 @@ export const createLog = async (
 };
 
 export const getAllLogs = async (
-  req: Request<getLogRequestBody, {}, {}>,
+  req: Request<getLogRequestParams, {}, {}>,
   res: Response
 ): Promise<Response> => {
   try {

@@ -5,6 +5,6 @@ const router: Router = Router();
 
 router.post("/create", createLog);
 
-router.post("/get/all/:userId", getAllLogs);
+router.get("/get/all/:userId", getAllLogs);
 
 export default router;
