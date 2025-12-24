@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,21 +11,15 @@ const Navbar: React.FC = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex space-x-8 text-white font-medium">
-          <a href="#home" className="hover:text-cyan-400 transition-colors">
+          <Link to ="/" className="hover:text-cyan-400 transition-colors">
             Home
-          </a>
-          <a href="#features" className="hover:text-cyan-400 transition-colors">
-            Features
-          </a>
+          </Link>
           <a href="#about" className="hover:text-cyan-400 transition-colors">
             About
           </a>
-          <a href="#contact" className="hover:text-cyan-400 transition-colors">
-            Contact
-          </a>
-          <button className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300">
+          <Link to="/login" className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300">
             Get Started
-          </button>
+          </Link>
         </div>
 
         {/* Mobile */}
@@ -71,21 +66,15 @@ const Navbar: React.FC = () => {
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden bg-black/80 backdrop-blur-md w-full px-6 py-4 flex flex-col space-y-4 text-white font-medium">
-          <a href="#home" className="hover:text-cyan-400 transition-colors">
+          <Link to="/" className="hover:text-cyan-400 transition-colors">
             Home
-          </a>
-          <a href="#features" className="hover:text-cyan-400 transition-colors">
-            Features
-          </a>
-          <a href="#about" className="hover:text-cyan-400 transition-colors">
+          </Link>
+          <a href="#contact" className="hover:text-cyan-400 transition-colors">
             About
           </a>
-          <a href="#contact" className="hover:text-cyan-400 transition-colors">
-            Contact
-          </a>
-          <button className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300">
+          <Link to="/login" className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300">
             Get Started
-          </button>
+          </Link>
         </div>
       )}
     </nav>
