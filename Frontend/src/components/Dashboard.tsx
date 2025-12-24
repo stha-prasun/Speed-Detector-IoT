@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import {
   LineChart,
   Line,
@@ -9,18 +9,53 @@ import {
   CartesianGrid,
 } from "recharts";
 import Sidebar from "./shared/Sidebar";
+import useGetAllTickets from "../hooks/useGetAllTickets";
+import { useAppSelector } from "../redux/hooks";
 
-const data = [
-  { month: "Jan", amount: 12000 },
-  { month: "Feb", amount: 15000 },
-  { month: "Mar", amount: 18000 },
-  { month: "Apr", amount: 22000 },
-  { month: "May", amount: 26000 },
-  { month: "Jun", amount: 31000 },
-  { month: "Jul", amount: 37000 },
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const Dashboard: FC = () => {
+  const loggedInUser = useAppSelector((store) => store.User?.loggedInUser);
+  const fetchTickets = useGetAllTickets(loggedInUser?._id);
+  const SpeedLog = useAppSelector((store) => store.SpeedLog.SpeedLog);
+
+  const [chartData, setChartData] = useState<
+    { month: string; amount: number }[]
+  >([]);
+
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  useEffect(() => {
+    // Initialize all months with 0 fines
+    const monthly: Record<string, number> = {};
+    months.forEach((m) => (monthly[m] = 0));
+
+    // Add fines to the corresponding month
+    SpeedLog.forEach((ticket) => {
+      const month = months[new Date(ticket.createdAt).getMonth()];
+      monthly[month] += Number(ticket.fineAmount); // convert to primitive number
+    });
+
+    // Convert to array for chart in month order
+    const chartArray = months.map((m) => ({ month: m, amount: monthly[m] }));
+    setChartData(chartArray);
+  }, [SpeedLog]);
+
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
       <Sidebar />
@@ -30,15 +65,13 @@ const Dashboard: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-slate-800/60 backdrop-blur p-6 rounded-xl shadow border border-slate-700">
             <h2 className="text-slate-400">Total Fines</h2>
-            <p className="text-3xl font-bold text-indigo-300">Rs. 37,000</p>
+            <p className="text-3xl font-bold text-indigo-300">{`Rs. ${loggedInUser?.totalFine}`}</p>
           </div>
           <div className="bg-slate-800/60 backdrop-blur p-6 rounded-xl shadow border border-slate-700">
-            <h2 className="text-slate-400">Overspeed Cases</h2>
-            <p className="text-3xl font-bold text-indigo-300">143</p>
-          </div>
-          <div className="bg-slate-800/60 backdrop-blur p-6 rounded-xl shadow border border-slate-700">
-            <h2 className="text-slate-400">Average Speed</h2>
-            <p className="text-3xl font-bold text-indigo-300">62 km/h</p>
+            <h2 className="text-slate-400">Total Cases</h2>
+            <p className="text-3xl font-bold text-indigo-300">
+              {SpeedLog.length}
+            </p>
           </div>
         </div>
 
@@ -50,7 +83,7 @@ const Dashboard: FC = () => {
 
           <div style={{ width: "100%", height: 350 }}>
             <ResponsiveContainer>
-              <LineChart data={data}>
+              <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                 <XAxis dataKey="month" stroke="#cbd5e1" />
                 <YAxis stroke="#cbd5e1" />

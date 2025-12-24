@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./user";
+import speedLogSlice from "./speedLog";
 
 const store = configureStore({
   reducer: {
     User: userSlice,
+    SpeedLog: speedLogSlice,
   },
 });
 
