@@ -1,6 +1,9 @@
 import { RxAvatar } from "react-icons/rx";
+import { useAppSelector } from "../../redux/hooks";
 
 const Sidebar = () => {
+  const loggedInUser = useAppSelector((store)=>store.User.loggedInUser);
+
   return (
     <aside className="w-64 bg-slate-800/50 border-r border-slate-700 p-6 flex flex-col backdrop-blur">
       {/* Logo */}
@@ -26,7 +29,7 @@ const Sidebar = () => {
         <div className="flex items-center gap-3 mt-10 p-3 border-t border-slate-700">
           <RxAvatar className="w-10 h-10 rounded-full" />
           <div>
-            <p className="font-medium text-white">Tom Cook</p>
+            <p className="font-medium text-white">{loggedInUser?.username}</p>
             <p className="text-sm text-slate-400">System Admin</p>
           </div>
         </div>
